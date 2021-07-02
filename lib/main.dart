@@ -12,9 +12,14 @@ class CalcApp extends StatefulWidget {
   _CalcAppState createState() => _CalcAppState();
 }
 
+enum Mode {
+  hex, dec, oct, bin
+}
+
 class _CalcAppState extends State<CalcApp> {
   List<String> _exp = [];
   String _answer = '';
+  Mode mode = Mode.dec;
 
   final numberCheck = RegExp(r'[A-F0-9]');
 
