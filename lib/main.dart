@@ -17,68 +17,68 @@ enum Mode {
 }
 
 class _CalcAppState extends State<CalcApp> {
-  List<String> _exp = [];
+  List<String> _expression = [];
   String _answer = '';
   Mode mode = Mode.dec;
 
   final numberCheck = RegExp(r'[A-F0-9]');
 
   bool isLastInputNumeric() {
-    debugPrint(_exp.last + ": " + numberCheck.hasMatch(_exp.last).toString());
-    return numberCheck.hasMatch(_exp.last);
+    debugPrint(_expression.last + ": " + numberCheck.hasMatch(_expression.last).toString());
+    return numberCheck.hasMatch(_expression.last);
   }
 
   void test(String text) {}
 
   void enterNumber(String text) {
     setState(() {
-      if (_exp.length == 0 || !isLastInputNumeric()) {
-        _exp.add(text);
+      if (_expression.length == 0 || !isLastInputNumeric()) {
+        _expression.add(text);
       } else {
-        _exp.last += text;
+        _expression.last += text;
       }
     });
-    debugPrint('$_exp');
+    debugPrint('$_expression');
   }
 
   void selectOperator(String text) {
     setState(() {
       if (isLastInputNumeric()) {
-        _exp.add(text);
+        _expression.add(text);
       } else {
-        _exp.last = text;
+        _expression.last = text;
       }
     });
-    debugPrint('$_exp');
+    debugPrint('$_expression');
   }
 
   void clear(String text) {
     setState(() {
       _answer = '';
-      _exp.clear();
+      _expression.clear();
     });
   }
 
   void delete(String text) {
-    if (_exp.length > 0) {
+    if (_expression.length > 0) {
       setState(() {
-        if (_exp.last.length == 1) {
-          _exp.removeLast();
+        if (_expression.last.length == 1) {
+          _expression.removeLast();
         } else {
-          _exp.last = _exp.last.substring(0, _exp.last.length - 1);
+          _expression.last = _expression.last.substring(0, _expression.last.length - 1);
         }
       });
     }
-    debugPrint('$_exp');
+    debugPrint('$_expression');
   }
 
   void evaluate(String text) {
     if (!isLastInputNumeric()) {
       setState(() {
-        _exp.removeLast();
+        _expression.removeLast();
       });
     }
-    debugPrint('$_exp');
+    debugPrint('$_expression');
   }
 
   @override
@@ -117,7 +117,7 @@ class _CalcAppState extends State<CalcApp> {
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Text(
-                      _exp.join(" "),
+                      _expression.join(" "),
                       style: GoogleFonts.rubik(
                         textStyle: TextStyle(
                           fontSize: 48,
