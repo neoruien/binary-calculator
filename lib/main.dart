@@ -24,7 +24,6 @@ class _CalcAppState extends State<CalcApp> {
   final numberCheck = RegExp(r'[A-F0-9]');
 
   bool isLastInputNumeric() {
-    debugPrint(expression.last + ": " + numberCheck.hasMatch(expression.last).toString());
     return numberCheck.hasMatch(expression.last);
   }
 
