@@ -17,68 +17,68 @@ enum Mode {
 }
 
 class _CalcAppState extends State<CalcApp> {
-  List<String> _expression = [];
-  String _answer = '';
+  List<String> expression = [];
+  String answer = '';
   Mode mode = Mode.dec;
 
   final numberCheck = RegExp(r'[A-F0-9]');
 
   bool isLastInputNumeric() {
-    debugPrint(_expression.last + ": " + numberCheck.hasMatch(_expression.last).toString());
-    return numberCheck.hasMatch(_expression.last);
+    debugPrint(expression.last + ": " + numberCheck.hasMatch(expression.last).toString());
+    return numberCheck.hasMatch(expression.last);
   }
 
   void test(String text) {}
 
   void enterNumber(String text) {
     setState(() {
-      if (_expression.length == 0 || !isLastInputNumeric()) {
-        _expression.add(text);
+      if (expression.length == 0 || !isLastInputNumeric()) {
+        expression.add(text);
       } else {
-        _expression.last += text;
+        expression.last += text;
       }
     });
-    debugPrint('$_expression');
+    debugPrint('$expression');
   }
 
   void selectOperator(String text) {
     setState(() {
       if (isLastInputNumeric()) {
-        _expression.add(text);
+        expression.add(text);
       } else {
-        _expression.last = text;
+        expression.last = text;
       }
     });
-    debugPrint('$_expression');
+    debugPrint('$expression');
   }
 
   void clear(String text) {
     setState(() {
-      _answer = '';
-      _expression.clear();
+      answer = '';
+      expression.clear();
     });
   }
 
   void delete(String text) {
-    if (_expression.length > 0) {
+    if (expression.length > 0) {
       setState(() {
-        if (_expression.last.length == 1) {
-          _expression.removeLast();
+        if (expression.last.length == 1) {
+          expression.removeLast();
         } else {
-          _expression.last = _expression.last.substring(0, _expression.last.length - 1);
+          expression.last = expression.last.substring(0, expression.last.length - 1);
         }
       });
     }
-    debugPrint('$_expression');
+    debugPrint('$expression');
   }
 
   void evaluate(String text) {
     if (!isLastInputNumeric()) {
       setState(() {
-        _expression.removeLast();
+        expression.removeLast();
       });
     }
-    debugPrint('$_expression');
+    debugPrint('$expression');
   }
 
   @override
@@ -99,7 +99,7 @@ class _CalcAppState extends State<CalcApp> {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 12),
                     child: Text(
-                      _answer,
+                      answer,
                       style: GoogleFonts.rubik(
                         textStyle: TextStyle(
                           fontSize: 24,
@@ -117,7 +117,7 @@ class _CalcAppState extends State<CalcApp> {
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Text(
-                      _expression.join(" "),
+                      expression.join(" "),
                       style: GoogleFonts.rubik(
                         textStyle: TextStyle(
                           fontSize: 48,
