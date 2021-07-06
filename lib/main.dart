@@ -7,6 +7,10 @@ void main() {
   runApp(CalcApp());
 }
 
+enum Mode {
+  hex, dec, oct, bin
+}
+
 class CalcApp extends StatefulWidget {
   @override
   _CalcAppState createState() => _CalcAppState();
@@ -15,15 +19,27 @@ class CalcApp extends StatefulWidget {
 class _CalcAppState extends State<CalcApp> {
   List<String> _exp = [];
   String _answer = '';
-
+  Mode _mode = Mode.dec;
   final numberCheck = RegExp(r'[A-F0-9]');
 
-  bool isLastInputNumeric() {
-    // debugPrint(_exp.last + ": " + numberCheck.hasMatch(_exp.last).toString());
-    return numberCheck.hasMatch(_exp.last);
+  void changeMode(String text) {
+    setState(() {
+      if (text == "hex") {
+        _mode = Mode.hex;
+      } else if (text == "dec") {
+        _mode = Mode.dec;
+      } else if (text == "oct") {
+        _mode = Mode.oct;
+      } else if (text == "bin") {
+        _mode = Mode.bin;
+      }
+    });
+    debugPrint('$_exp');
   }
 
-  void test(String text) {}
+  bool isLastInputNumeric() {
+    return numberCheck.hasMatch(_exp.last);
+  }
 
   void enterNumber(String text) {
     setState(() {
@@ -109,6 +125,10 @@ class _CalcAppState extends State<CalcApp> {
     // Second loop: debug
     print("ans:");
     print(ans);
+    // Second loop: setState
+    setState(() {
+      _answer = ans.toString();
+    });
   }
 
   @override
@@ -129,11 +149,11 @@ class _CalcAppState extends State<CalcApp> {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 12),
                     child: Text(
-                      _answer,
+                      _exp.join(" "),
                       style: GoogleFonts.rubik(
                         textStyle: TextStyle(
                           fontSize: 24,
-                          color: Color(0xFF545F61),
+                          color: Color(0xFF545F90),
                         ),
                       ),
                     ),
@@ -147,7 +167,7 @@ class _CalcAppState extends State<CalcApp> {
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Text(
-                      _exp.join(" "),
+                      _answer,
                       style: GoogleFonts.rubik(
                         textStyle: TextStyle(
                           fontSize: 48,
@@ -164,20 +184,52 @@ class _CalcAppState extends State<CalcApp> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   CalcButton(
+                    text: 'hex',
+                    textSize: 18,
+                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
+                    callback: changeMode,
+                  ),
+                  CalcButton(
+                    text: 'dec',
+                    textSize: 18,
+                    fillColor: _mode == Mode.dec ? Constants.SECONDARY_COLOR : 0x00,
+                    callback: changeMode,
+                  ),
+                  CalcButton(
+                    text: 'oct',
+                    textSize: 18,
+                    fillColor: _mode == Mode.oct ? Constants.SECONDARY_COLOR : 0x00,
+                    callback: changeMode,
+                  ),
+                  CalcButton(
+                    text: 'bin',
+                    textSize: 18,
+                    fillColor: _mode == Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
+                    callback: changeMode,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  CalcButton(
                     text: 'A',
-                    callback: test,
+                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
+                    callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'B',
+                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'C',
+                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '±',
-                    fillColor: Constants.SECONDARY_COLOR,
+                    // fillColor: Constants.SECONDARY_COLOR,
                     callback: selectOperator,
                   ),
                 ],
@@ -187,14 +239,17 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: 'D',
+                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'E',
+                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'F',
+                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -209,14 +264,17 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: '7',
+                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '8',
+                    fillColor: _mode != Mode.bin && _mode != Mode.oct ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '9',
+                    fillColor: _mode != Mode.bin && _mode != Mode.oct ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -231,14 +289,17 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: '4',
+                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '5',
+                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '6',
+                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -253,14 +314,17 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: '1',
+                    fillColor: Constants.SECONDARY_COLOR,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '2',
+                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '3',
+                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -275,6 +339,7 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: '0',
+                    fillColor: Constants.SECONDARY_COLOR,
                     callback: enterNumber,
                   ),
                   CalcButton(
