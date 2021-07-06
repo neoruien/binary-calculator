@@ -19,7 +19,7 @@ class _CalcAppState extends State<CalcApp> {
   final numberCheck = RegExp(r'[A-F0-9]');
 
   bool isLastInputNumeric() {
-    debugPrint(_exp.last + ": " + numberCheck.hasMatch(_exp.last).toString());
+    // debugPrint(_exp.last + ": " + numberCheck.hasMatch(_exp.last).toString());
     return numberCheck.hasMatch(_exp.last);
   }
 
@@ -74,6 +74,41 @@ class _CalcAppState extends State<CalcApp> {
       });
     }
     debugPrint('$_exp');
+
+    // First loop: init
+    List<String> _processed = [];
+    _processed.add(_exp[0]);
+    // First loop: loop
+    int i = 1;
+    while (i < _exp.length) {
+      if (_exp[i] == "*") {
+        _processed.last = (double.parse(_processed.last) * double.parse(_exp[i+1])).toString();
+      } else if (_exp[i] == "/") {
+        _processed.last = (double.parse(_processed.last) / double.parse(_exp[i+1])).toString();
+      } else {
+        _processed.add(_exp[i]);
+        _processed.add(_exp[i+1]);
+      }
+      i += 2;
+    }
+    // First loop: debug
+    print("processed:");
+    print(_processed);
+    // Second loop: init
+    double ans = double.parse(_processed[0]);
+    // Second loop: loop
+    int j = 1;
+    while (j < _processed.length) {
+      if (_processed[j] == "+") {
+        ans = ans + double.parse(_processed[j + 1]);
+      } else if (_processed[j] == "-") {
+        ans = ans - double.parse(_processed[j + 1]);
+      }
+      j += 2;
+    }
+    // Second loop: debug
+    print("ans:");
+    print(ans);
   }
 
   @override
