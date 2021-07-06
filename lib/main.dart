@@ -18,10 +18,10 @@ class CalcApp extends StatefulWidget {
 }
 
 class _CalcAppState extends State<CalcApp> {
-  List<String> _exp = [];
+  List<dynamic> _exp = [];
   String _answer = '';
   Mode _mode = Mode.dec;
-  final numberCheck = RegExp(r'[A-F0-9]');
+  // final numberCheck = RegExp(r'[A-F0-9]');
   final hex2dec = AnyBase(AnyBase.hex, AnyBase.dec);
   final dec2hex = AnyBase(AnyBase.dec, AnyBase.hex);
   final oct2dec = AnyBase(AnyBase.oct, AnyBase.dec);
@@ -44,13 +44,14 @@ class _CalcAppState extends State<CalcApp> {
     debugPrint('$_exp');
   }
 
-  bool isLastInputNumeric() {
-    return numberCheck.hasMatch(_exp.last);
+  bool isNumeric(String text) {
+    // return numberCheck.hasMatch(text);
+    return "+-*/".contains(text) == false;
   }
 
   void enterNumber(String text) {
     setState(() {
-      if (_exp.length == 0 || !isLastInputNumeric()) {
+      if (_exp.length == 0 || !isNumeric(_exp.last)) {
         _exp.add(text);
       } else {
         _exp.last += text;
@@ -61,7 +62,7 @@ class _CalcAppState extends State<CalcApp> {
 
   void selectOperator(String text) {
     setState(() {
-      if (isLastInputNumeric()) {
+      if (isNumeric(_exp.last)) {
         _exp.add(text);
       } else {
         _exp.last = text;
@@ -91,23 +92,30 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   void evaluate(String text) {
-    if (!isLastInputNumeric()) {
+    if (!isNumeric(_exp.last)) {
       setState(() {
         _exp.removeLast();
       });
     }
     debugPrint('$_exp');
 
+    // Convert to dec double
+    for (int i=0; i<_exp.length; i++) {
+      if (isNumeric(_exp[i])) {
+        _exp[i] = double.parse(_exp[i]);
+      }
+    }
+
     // First loop: init
-    List<String> _processed = [];
+    List<dynamic> _processed = [];
     _processed.add(_exp[0]);
     // First loop: loop
     int i = 1;
     while (i < _exp.length) {
       if (_exp[i] == "*") {
-        _processed.last = (double.parse(_processed.last) * double.parse(_exp[i+1])).toString();
+        _processed.last = _processed.last * _exp[i+1];
       } else if (_exp[i] == "/") {
-        _processed.last = (double.parse(_processed.last) / double.parse(_exp[i+1])).toString();
+        _processed.last = _processed.last / _exp[i+1];
       } else {
         _processed.add(_exp[i]);
         _processed.add(_exp[i+1]);
@@ -118,14 +126,14 @@ class _CalcAppState extends State<CalcApp> {
     print("processed:");
     print(_processed);
     // Second loop: init
-    double ans = double.parse(_processed[0]);
+    double ans = _processed[0];
     // Second loop: loop
     int j = 1;
     while (j < _processed.length) {
       if (_processed[j] == "+") {
-        ans = ans + double.parse(_processed[j + 1]);
+        ans = ans + _processed[j + 1];
       } else if (_processed[j] == "-") {
-        ans = ans - double.parse(_processed[j + 1]);
+        ans = ans - _processed[j + 1];
       }
       j += 2;
     }
