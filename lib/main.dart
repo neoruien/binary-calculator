@@ -102,7 +102,15 @@ class _CalcAppState extends State<CalcApp> {
     // Convert to dec double
     for (int i=0; i<_exp.length; i++) {
       if (isNumeric(_exp[i])) {
-        _exp[i] = double.parse(_exp[i]);
+        if (_mode == Mode.hex) {
+          _exp[i] = double.parse(hex2dec.convert(_exp[i].toLowerCase()));
+        } else if (_mode == Mode.dec) {
+          _exp[i] = double.parse(_exp[i]);
+        } else if (_mode == Mode.oct) {
+          _exp[i] = double.parse(oct2dec.convert(_exp[i].toLowerCase()));
+        } else if (_mode == Mode.bin) {
+          _exp[i] = double.parse(bin2dec.convert(_exp[i].toLowerCase()));
+        }
       }
     }
 
