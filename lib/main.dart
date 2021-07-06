@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:binary_calculator/util/constants.dart' as Constants;
 import 'package:binary_calculator/components/calcButton.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:any_base/any_base.dart';
 
 void main() {
   runApp(CalcApp());
@@ -21,6 +22,12 @@ class _CalcAppState extends State<CalcApp> {
   String _answer = '';
   Mode _mode = Mode.dec;
   final numberCheck = RegExp(r'[A-F0-9]');
+  final hex2dec = AnyBase(AnyBase.hex, AnyBase.dec);
+  final dec2hex = AnyBase(AnyBase.dec, AnyBase.hex);
+  final oct2dec = AnyBase(AnyBase.oct, AnyBase.dec);
+  final dec2oct = AnyBase(AnyBase.dec, AnyBase.oct);
+  final bin2dec = AnyBase(AnyBase.bin, AnyBase.dec);
+  final dec2bin = AnyBase(AnyBase.dec, AnyBase.bin);
 
   void changeMode(String text) {
     setState(() {
