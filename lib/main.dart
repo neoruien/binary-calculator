@@ -21,7 +21,6 @@ class _CalcAppState extends State<CalcApp> {
   List<dynamic> _exp = [];
   String _answer = '';
   Mode _mode = Mode.dec;
-  // final numberCheck = RegExp(r'[A-F0-9]');
   final hex2dec = AnyBase(AnyBase.hex, AnyBase.dec);
   final dec2hex = AnyBase(AnyBase.dec, AnyBase.hex);
   final oct2dec = AnyBase(AnyBase.oct, AnyBase.dec);
@@ -45,11 +44,14 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   bool isNumeric(String text) {
-    // return numberCheck.hasMatch(text);
     return "+-*/".contains(text) == false;
   }
 
   void enterNumber(String text) {
+    if (_answer.length > 0) {
+      _answer = '';
+      _exp.clear();
+    }
     setState(() {
       if (_exp.length == 0 || !isNumeric(_exp.last)) {
         _exp.add(text);
@@ -61,6 +63,13 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   void selectOperator(String text) {
+    if (_answer.length > 0) {
+      _exp.clear();
+      _exp.add(_answer);
+      _answer = '';
+    } else if (_exp.length == 0) {
+      return;
+    }
     setState(() {
       if (isNumeric(_exp.last)) {
         _exp.add(text);
