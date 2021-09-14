@@ -18,7 +18,9 @@ class _CalcAppState extends State<CalcApp> {
   int _radix = 10;
 
   void changeRadix(String text) {
+    int originalRadix = _radix;
     setState(() {
+      // change radix
       if (text == "hex") {
         _radix = 16;
       } else if (text == "dec") {
@@ -28,6 +30,14 @@ class _CalcAppState extends State<CalcApp> {
       } else if (text == "bin") {
         _radix = 2;
       }
+      // update exp
+      for (int i=0; i<_exp.length; i++) {
+        if (isNumeric(_exp[i])) {
+          _exp[i] = int.parse(_exp[i], radix: originalRadix).toRadixString(_radix).toUpperCase();
+        }
+      }
+      // update ans
+      _answer = int.parse(_answer, radix: originalRadix).toRadixString(_radix).toUpperCase();
     });
     debugPrint('$_exp');
   }
@@ -99,28 +109,30 @@ class _CalcAppState extends State<CalcApp> {
         _exp.removeLast();
       });
     }
-    debugPrint('evaluate: $_exp');
+
+    List<dynamic> _dec = [..._exp];
+    debugPrint('evaluate: $_dec');
 
     // Convert to dec
-    for (int i=0; i<_exp.length; i++) {
-      if (isNumeric(_exp[i])) {
-        _exp[i] = int.parse(_exp[i], radix: _radix);
+    for (int i=0; i<_dec.length; i++) {
+      if (isNumeric(_dec[i])) {
+        _dec[i] = int.parse(_dec[i], radix: _radix);
       }
     }
 
     // First loop: init
     List<dynamic> _processed = [];
-    _processed.add(_exp[0]);
+    _processed.add(_dec[0]);
     // First loop: loop
     int i = 1;
-    while (i < _exp.length) {
-      if (_exp[i] == "*") {
-        _processed.last = _processed.last * _exp[i+1];
-      } else if (_exp[i] == "/") {
-        _processed.last = _processed.last / _exp[i+1];
+    while (i < _dec.length) {
+      if (_dec[i] == "*") {
+        _processed.last = _processed.last * _dec[i+1];
+      } else if (_dec[i] == "/") {
+        _processed.last = _processed.last / _dec[i+1];
       } else {
-        _processed.add(_exp[i]);
-        _processed.add(_exp[i+1]);
+        _processed.add(_dec[i]);
+        _processed.add(_dec[i+1]);
       }
       i += 2;
     }
@@ -144,7 +156,7 @@ class _CalcAppState extends State<CalcApp> {
     print(ans);
     // Second loop: setState
     setState(() {
-      _answer = ans.toString();
+      _answer = ans.toRadixString(_radix).toUpperCase();
     });
   }
 
