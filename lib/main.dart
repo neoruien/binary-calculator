@@ -37,7 +37,9 @@ class _CalcAppState extends State<CalcApp> {
         }
       }
       // update ans
-      _answer = int.parse(_answer, radix: originalRadix).toRadixString(_radix).toUpperCase();
+      if (_answer != "") {
+        _answer = int.parse(_answer, radix: originalRadix).toRadixString(_radix).toUpperCase();
+      }
     });
     debugPrint('$_exp');
   }
@@ -66,6 +68,8 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   void selectOperator(String text) {
+    print("AL: ${_answer.length}");
+    print("EL: ${_exp.length}");
     if (_answer.length > 0) {
       _exp.clear();
       _exp.add(_answer);
@@ -244,16 +248,19 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: 'A',
                     fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix == 16,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'B',
                     fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix == 16,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'C',
                     fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix == 16,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -269,16 +276,19 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: 'D',
                     fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix == 16,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'E',
                     fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix == 16,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'F',
                     fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix == 16,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -294,16 +304,19 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: '7',
                     fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix >= 8,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '8',
                     fillColor: _radix >= 10 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix >= 10,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '9',
                     fillColor: _radix >= 10 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix >= 10,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -319,16 +332,19 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: '4',
                     fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix >= 8,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '5',
                     fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix >= 8,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '6',
                     fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix >= 8,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -349,11 +365,13 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: '2',
                     fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix >= 8,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '3',
                     fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
+                    condition: _radix >= 8,
                     callback: enterNumber,
                   ),
                   CalcButton(

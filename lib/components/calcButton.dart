@@ -6,6 +6,7 @@ class CalcButton extends StatelessWidget {
   final int fillColor;
   final int textColor;
   final double textSize;
+  final bool condition;
   final Function callback;
 
   const CalcButton({
@@ -14,6 +15,7 @@ class CalcButton extends StatelessWidget {
     this.fillColor = 0x00,
     this.textColor = 0xFFFFFFFF,
     this.textSize = 28,
+    this.condition = true,
     required this.callback,
   }) : super(key: key);
 
@@ -28,9 +30,9 @@ class CalcButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0),
           ),
-          onPressed: () {
-            callback(text);
-          },
+          onPressed: condition ? () => callback(text) : null,
+          disabledColor: Colors.grey,
+          disabledTextColor: Colors.white,
           child: Text(
             text,
             style: GoogleFonts.rubik(
