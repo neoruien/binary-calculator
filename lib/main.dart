@@ -45,8 +45,11 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   bool isNumeric(String text) {
-    // return numberCheck.hasMatch(text);
     return "+-*/".contains(text) == false;
+  }
+
+  bool isFloat(String text) {
+    return text.contains(".");
   }
 
   void enterNumber(String text) {
@@ -97,7 +100,7 @@ class _CalcAppState extends State<CalcApp> {
         _exp.removeLast();
       });
     }
-    debugPrint('$_exp');
+    debugPrint('evaluate: $_exp');
 
     // Convert to dec double
     for (int i=0; i<_exp.length; i++) {
@@ -251,9 +254,9 @@ class _CalcAppState extends State<CalcApp> {
                     callback: enterNumber,
                   ),
                   CalcButton(
-                    text: '±',
-                    // fillColor: Constants.SECONDARY_COLOR,
-                    callback: selectOperator,
+                    text: '.',
+                    fillColor: Constants.SECONDARY_COLOR,
+                    callback: enterNumber,
                   ),
                 ],
               ),
