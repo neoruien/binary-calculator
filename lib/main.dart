@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:binary_calculator/util/constants.dart' as Constants;
 import 'package:binary_calculator/components/calcButton.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:any_base/any_base.dart';
 
 void main() {
   runApp(CalcApp());
-}
-
-enum Mode {
-  hex, dec, oct, bin
 }
 
 class CalcApp extends StatefulWidget {
@@ -20,24 +15,18 @@ class CalcApp extends StatefulWidget {
 class _CalcAppState extends State<CalcApp> {
   List<dynamic> _exp = [];
   String _answer = '';
-  Mode _mode = Mode.dec;
-  final hex2dec = AnyBase(AnyBase.hex, AnyBase.dec);
-  final dec2hex = AnyBase(AnyBase.dec, AnyBase.hex);
-  final oct2dec = AnyBase(AnyBase.oct, AnyBase.dec);
-  final dec2oct = AnyBase(AnyBase.dec, AnyBase.oct);
-  final bin2dec = AnyBase(AnyBase.bin, AnyBase.dec);
-  final dec2bin = AnyBase(AnyBase.dec, AnyBase.bin);
+  int _radix = 10;
 
-  void changeMode(String text) {
+  void changeRadix(String text) {
     setState(() {
       if (text == "hex") {
-        _mode = Mode.hex;
+        _radix = 16;
       } else if (text == "dec") {
-        _mode = Mode.dec;
+        _radix = 10;
       } else if (text == "oct") {
-        _mode = Mode.oct;
+        _radix = 8;
       } else if (text == "bin") {
-        _mode = Mode.bin;
+        _radix = 2;
       }
     });
     debugPrint('$_exp');
@@ -112,18 +101,10 @@ class _CalcAppState extends State<CalcApp> {
     }
     debugPrint('evaluate: $_exp');
 
-    // Convert to dec double
+    // Convert to dec
     for (int i=0; i<_exp.length; i++) {
       if (isNumeric(_exp[i])) {
-        if (_mode == Mode.hex) {
-          _exp[i] = double.parse(hex2dec.convert(_exp[i].toLowerCase()));
-        } else if (_mode == Mode.dec) {
-          _exp[i] = double.parse(_exp[i]);
-        } else if (_mode == Mode.oct) {
-          _exp[i] = double.parse(oct2dec.convert(_exp[i].toLowerCase()));
-        } else if (_mode == Mode.bin) {
-          _exp[i] = double.parse(bin2dec.convert(_exp[i].toLowerCase()));
-        }
+        _exp[i] = int.parse(_exp[i], radix: _radix);
       }
     }
 
@@ -147,7 +128,7 @@ class _CalcAppState extends State<CalcApp> {
     print("processed:");
     print(_processed);
     // Second loop: init
-    double ans = _processed[0];
+    dynamic ans = _processed[0];
     // Second loop: loop
     int j = 1;
     while (j < _processed.length) {
@@ -222,26 +203,26 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: 'hex',
                     textSize: 18,
-                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
-                    callback: changeMode,
+                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
+                    callback: changeRadix,
                   ),
                   CalcButton(
                     text: 'dec',
                     textSize: 18,
-                    fillColor: _mode == Mode.dec ? Constants.SECONDARY_COLOR : 0x00,
-                    callback: changeMode,
+                    fillColor: _radix == 10 ? Constants.SECONDARY_COLOR : 0x00,
+                    callback: changeRadix,
                   ),
                   CalcButton(
                     text: 'oct',
                     textSize: 18,
-                    fillColor: _mode == Mode.oct ? Constants.SECONDARY_COLOR : 0x00,
-                    callback: changeMode,
+                    fillColor: _radix == 8 ? Constants.SECONDARY_COLOR : 0x00,
+                    callback: changeRadix,
                   ),
                   CalcButton(
                     text: 'bin',
                     textSize: 18,
-                    fillColor: _mode == Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
-                    callback: changeMode,
+                    fillColor: _radix == 2 ? Constants.SECONDARY_COLOR : 0x00,
+                    callback: changeRadix,
                   ),
                 ],
               ),
@@ -250,17 +231,17 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: 'A',
-                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'B',
-                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'C',
-                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -275,17 +256,17 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: 'D',
-                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'E',
-                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: 'F',
-                    fillColor: _mode == Mode.hex ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -300,17 +281,17 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: '7',
-                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '8',
-                    fillColor: _mode != Mode.bin && _mode != Mode.oct ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix >= 10 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '9',
-                    fillColor: _mode != Mode.bin && _mode != Mode.oct ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix >= 10 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -325,17 +306,17 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: '4',
-                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '5',
-                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '6',
-                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
@@ -355,12 +336,12 @@ class _CalcAppState extends State<CalcApp> {
                   ),
                   CalcButton(
                     text: '2',
-                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
                     text: '3',
-                    fillColor: _mode != Mode.bin ? Constants.SECONDARY_COLOR : 0x00,
+                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: enterNumber,
                   ),
                   CalcButton(
