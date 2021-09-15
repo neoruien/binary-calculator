@@ -67,9 +67,27 @@ class _CalcAppState extends State<CalcApp> {
     debugPrint('$_exp');
   }
 
+  void enterPlusMinusSign(String text) {
+    setState(() {
+      if (_answer.length > 0) {
+        _exp.clear();
+        _exp.add(negate(_answer));
+        _answer = '';
+      } else if (_exp.length > 0) {
+        _exp.last = negate(_exp.last);
+      }
+    });
+  }
+
+  String negate(String text) {
+    if (text.startsWith('-')) {
+      return text.substring(1);
+    } else {
+      return '-' + text;
+    }
+  }
+
   void selectOperator(String text) {
-    print("AL: ${_answer.length}");
-    print("EL: ${_exp.length}");
     if (_answer.length > 0) {
       _exp.clear();
       _exp.add(_answer);
@@ -264,9 +282,9 @@ class _CalcAppState extends State<CalcApp> {
                     callback: enterNumber,
                   ),
                   CalcButton(
-                    text: '.',
+                    text: '±',
                     fillColor: Constants.SECONDARY_COLOR,
-                    callback: enterNumber,
+                    callback: enterPlusMinusSign,
                   ),
                 ],
               ),
