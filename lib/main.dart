@@ -151,7 +151,7 @@ class _CalcAppState extends State<CalcApp> {
       if (_dec[i] == "*") {
         _processed.last = _processed.last * _dec[i+1];
       } else if (_dec[i] == "/") {
-        _processed.last = _processed.last / _dec[i+1];
+        _processed.last = _processed.last ~/ _dec[i+1];
       } else {
         _processed.add(_dec[i]);
         _processed.add(_dec[i+1]);
@@ -310,7 +310,7 @@ class _CalcAppState extends State<CalcApp> {
                     callback: enterNumber,
                   ),
                   CalcButton(
-                    text: '/',
+                    text: '//',
                     fillColor: Constants.SECONDARY_COLOR,
                     callback: selectOperator,
                   ),
