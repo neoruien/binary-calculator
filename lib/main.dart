@@ -52,10 +52,6 @@ class _CalcAppState extends State<CalcApp> {
     return text == "+" || text == "-" || text == "*" || text == "//" ||  text == "and" || text == "or" || text == "xor";
   }
 
-  bool isUnaryOperator(String text) {
-    return text == "±" || text == "not";
-  }
-
   bool isFloat(String text) {
     return text.contains(".");
   }
@@ -75,43 +71,32 @@ class _CalcAppState extends State<CalcApp> {
     debugPrint('$_exp');
   }
 
-  void enterNotSign(String text) {
-    setState(() {
-      if (_answer.length > 0) {
-        _exp.clear();
-        _exp.add(not(_answer));
-        _answer = '';
-      } else if (_exp.length > 0) {
-        _exp.last = not(_exp.last);
-      }
-    });
-  }
-
-  void enterPlusMinusSign(String text) {
-    setState(() {
-      if (_answer.length > 0) {
-        _exp.clear();
-        _exp.add(negate(_answer));
-        _answer = '';
-      } else if (_exp.length > 0) {
-        _exp.last = negate(_exp.last);
-      }
-    });
-  }
-
-  String not(String text) {
-    if (text.startsWith('not')) {
-      return text.split("(")[1].split(")")[0];
-    } else {
-      return 'not(' + text + ')';
+  void enterUnaryOperator(String text) {
+    if (isNumeric(_exp.last)) {
+      setState(() {
+        if (_answer.length > 0) {
+          _exp.clear();
+          _exp.add(unarize(_answer, text));
+          _answer = '';
+        } else if (_exp.length > 0) {
+          _exp.last = unarize(_exp.last, text);
+        }
+      });
     }
+    debugPrint('$_exp');
   }
 
-  String negate(String text) {
-    if (text.startsWith('-')) {
-      return text.substring(1);
+  String unarize(String text, String operator) {
+    if (operator == '~' && text.contains('~')) {
+        return text.replaceAll("~", "");
+    } else if (operator == '~' && !text.contains('~')) {
+        return '~' + text;
+    } else if (operator == '±' && text.contains('-')) {
+        return text.replaceAll("-", "");
+    } else if (operator == '±' && !text.contains('-')) {
+        return '-' + text;
     } else {
-      return '-' + text;
+      throw("Error");
     }
   }
 
@@ -165,9 +150,13 @@ class _CalcAppState extends State<CalcApp> {
 
     // Convert to dec
     for (int i=0; i<_dec.length; i++) {
-      if (_dec[i].startsWith("not")) {
-        int targetNum = int.parse(_dec[i].split("(")[1].split(")")[0]);
-        _dec[i] = (~targetNum).toString();
+      if (_dec[i].contains("~")) {
+        int targetNum = int.parse(_dec[i].replaceAll("~", ""));
+        int finalNum = ~targetNum;
+        if (_dec[i].startsWith("-")) {
+          finalNum = finalNum * -1;
+        }
+        _dec[i] = finalNum.toString();
       }
       if (isNumeric(_dec[i])) {
         _dec[i] = int.parse(_dec[i], radix: _radix);
@@ -320,10 +309,10 @@ class _CalcAppState extends State<CalcApp> {
                     callback: selectOperator,
                   ),
                   CalcButton(
-                    text: 'not',
+                    text: '~',
                     textSize: 18,
                     fillColor: Constants.SECONDARY_COLOR,
-                    callback: enterNotSign,
+                    callback: enterUnaryOperator,
                   ),
                 ],
               ),
@@ -351,7 +340,7 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: '±',
                     fillColor: Constants.SECONDARY_COLOR,
-                    callback: enterPlusMinusSign,
+                    callback: enterUnaryOperator,
                   ),
                 ],
               ),
