@@ -45,7 +45,15 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   bool isNumeric(String text) {
-    return "+-*/".contains(text) == false;
+    return "+-*/".contains(text) == false && text != "and" && text != "or" && text != "xor";
+  }
+
+  bool isBinaryOperator(String text) {
+    return text == "+" || text == "-" || text == "*" || text == "//" ||  text == "and" || text == "or" || text == "xor";
+  }
+
+  bool isUnaryOperator(String text) {
+    return text == "±" || text == "not";
   }
 
   bool isFloat(String text) {
@@ -67,6 +75,18 @@ class _CalcAppState extends State<CalcApp> {
     debugPrint('$_exp');
   }
 
+  void enterNotSign(String text) {
+    setState(() {
+      if (_answer.length > 0) {
+        _exp.clear();
+        _exp.add(not(_answer));
+        _answer = '';
+      } else if (_exp.length > 0) {
+        _exp.last = not(_exp.last);
+      }
+    });
+  }
+
   void enterPlusMinusSign(String text) {
     setState(() {
       if (_answer.length > 0) {
@@ -77,6 +97,14 @@ class _CalcAppState extends State<CalcApp> {
         _exp.last = negate(_exp.last);
       }
     });
+  }
+
+  String not(String text) {
+    if (text.startsWith('not')) {
+      return text.split("(")[1].split(")")[0];
+    } else {
+      return 'not(' + text + ')';
+    }
   }
 
   String negate(String text) {
@@ -137,6 +165,10 @@ class _CalcAppState extends State<CalcApp> {
 
     // Convert to dec
     for (int i=0; i<_dec.length; i++) {
+      if (_dec[i].startsWith("not")) {
+        int targetNum = int.parse(_dec[i].split("(")[1].split(")")[0]);
+        _dec[i] = (~targetNum).toString();
+      }
       if (isNumeric(_dec[i])) {
         _dec[i] = int.parse(_dec[i], radix: _radix);
       }
@@ -151,7 +183,13 @@ class _CalcAppState extends State<CalcApp> {
       if (_dec[i] == "*") {
         _processed.last = _processed.last * _dec[i+1];
       } else if (_dec[i] == "/") {
-        _processed.last = _processed.last ~/ _dec[i+1];
+        _processed.last = _processed.last ~/ _dec[i + 1];
+      } else if (_dec[i] == "and") {
+        _processed.last = _processed.last & _dec[i + 1];
+      } else if (_dec[i] == "or") {
+        _processed.last = _processed.last | _dec[i + 1];
+      } else if (_dec[i] == "xor") {
+        _processed.last = _processed.last ^ _dec[i + 1];
       } else {
         _processed.add(_dec[i]);
         _processed.add(_dec[i+1]);
@@ -257,6 +295,35 @@ class _CalcAppState extends State<CalcApp> {
                     textSize: 18,
                     fillColor: _radix == 2 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: changeRadix,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  CalcButton(
+                    text: 'and',
+                    textSize: 18,
+                    fillColor: Constants.SECONDARY_COLOR,
+                    callback: selectOperator,
+                  ),
+                  CalcButton(
+                    text: 'or',
+                    textSize: 18,
+                    fillColor: Constants.SECONDARY_COLOR,
+                    callback: selectOperator,
+                  ),
+                  CalcButton(
+                    text: 'xor',
+                    textSize: 18,
+                    fillColor: Constants.SECONDARY_COLOR,
+                    callback: selectOperator,
+                  ),
+                  CalcButton(
+                    text: 'not',
+                    textSize: 18,
+                    fillColor: Constants.SECONDARY_COLOR,
+                    callback: enterNotSign,
                   ),
                 ],
               ),
