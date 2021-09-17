@@ -23,7 +23,7 @@ class CalcButton extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: Colors.white,
+      primary: Color(textColor),
       backgroundColor: Color(fillColor),
       onSurface: Colors.grey,
       shape: RoundedRectangleBorder(

@@ -273,25 +273,25 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: 'hex',
-                    textSize: 13.5,
+                    textSize: 18,
                     fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     method: changeMode,
                   ),
                   CalcButton(
                     text: 'dec',
-                    textSize: 13.5,
+                    textSize: 18,
                     fillColor: _radix == 10 ? Constants.SECONDARY_COLOR : 0x00,
                     method: changeMode,
                   ),
                   CalcButton(
                     text: 'oct',
-                    textSize: 13.5,
+                    textSize: 18,
                     fillColor: _radix == 8 ? Constants.SECONDARY_COLOR : 0x00,
                     method: changeMode,
                   ),
                   CalcButton(
                     text: 'bin',
-                    textSize: 13.5,
+                    textSize: 18,
                     fillColor: _radix == 2 ? Constants.SECONDARY_COLOR : 0x00,
                     method: changeMode,
                   ),
@@ -302,25 +302,25 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: 'and',
-                    textSize: 13,
+                    textSize: 18,
                     fillColor: Constants.SECONDARY_COLOR,
                     method: enterBinaryOperator,
                   ),
                   CalcButton(
                     text: 'or',
-                    textSize: 13.5,
+                    textSize: 18,
                     fillColor: Constants.SECONDARY_COLOR,
                     method: enterBinaryOperator,
                   ),
                   CalcButton(
                     text: 'xor',
-                    textSize: 13.5,
+                    textSize: 18,
                     fillColor: Constants.SECONDARY_COLOR,
                     method: enterBinaryOperator,
                   ),
                   CalcButton(
                     text: 'not',
-                    textSize: 13.5,
+                    textSize: 18,
                     fillColor: Constants.SECONDARY_COLOR,
                     method: enterUnaryOperator,
                   ),
@@ -331,19 +331,16 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: 'A',
-                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix == 16,
                     method: enterNumber,
                   ),
                   CalcButton(
                     text: 'B',
-                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix == 16,
                     method: enterNumber,
                   ),
                   CalcButton(
                     text: 'C',
-                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix == 16,
                     method: enterNumber,
                   ),
@@ -359,19 +356,16 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: 'D',
-                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix == 16,
                     method: enterNumber,
                   ),
                   CalcButton(
                     text: 'E',
-                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix == 16,
                     method: enterNumber,
                   ),
                   CalcButton(
                     text: 'F',
-                    fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix == 16,
                     method: enterNumber,
                   ),
@@ -387,19 +381,16 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: '7',
-                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix >= 8,
                     method: enterNumber,
                   ),
                   CalcButton(
                     text: '8',
-                    fillColor: _radix >= 10 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix >= 10,
                     method: enterNumber,
                   ),
                   CalcButton(
                     text: '9',
-                    fillColor: _radix >= 10 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix >= 10,
                     method: enterNumber,
                   ),
@@ -415,19 +406,16 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: '4',
-                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix >= 8,
                     method: enterNumber,
                   ),
                   CalcButton(
                     text: '5',
-                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix >= 8,
                     method: enterNumber,
                   ),
                   CalcButton(
                     text: '6',
-                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix >= 8,
                     method: enterNumber,
                   ),
@@ -443,18 +431,15 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: '1',
-                    fillColor: Constants.SECONDARY_COLOR,
                     method: enterNumber,
                   ),
                   CalcButton(
                     text: '2',
-                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix >= 8,
                     method: enterNumber,
                   ),
                   CalcButton(
                     text: '3',
-                    fillColor: _radix >= 8 ? Constants.SECONDARY_COLOR : 0x00,
                     condition: _radix >= 8,
                     method: enterNumber,
                   ),
@@ -470,16 +455,16 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: '0',
-                    fillColor: Constants.SECONDARY_COLOR,
                     method: enterNumber,
                   ),
                   CalcButton(
-                    text: 'C',
+                    text: 'AC',
+                    textSize: 23,
                     method: clear,
                   ),
                   CalcButton(
-                    text: '<-',
-                    textSize: 22,
+                    text: '←',
+                    textSize: 30,
                     method: delete,
                   ),
                   CalcButton(
