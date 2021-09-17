@@ -14,7 +14,7 @@ class CalcButton extends StatelessWidget {
     required this.text,
     this.fillColor = 0x00,
     this.textColor = 0xFFFFFFFF,
-    this.textSize = 28,
+    this.textSize = 25,
     this.condition = true,
     required this.callback,
   }) : super(key: key);
@@ -24,8 +24,8 @@ class CalcButton extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(5),
       child: SizedBox(
-        width: 65,
-        height: 65,
+        width: 55,
+        height: 55,
         child: FlatButton(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0),

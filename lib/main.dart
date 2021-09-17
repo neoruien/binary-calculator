@@ -150,17 +150,26 @@ class _CalcAppState extends State<CalcApp> {
 
     // Convert to dec
     for (int i=0; i<_dec.length; i++) {
-      if (_dec[i].contains("~")) {
-        int targetNum = int.parse(_dec[i].replaceAll("~", ""));
-        int finalNum = ~targetNum;
-        if (_dec[i].startsWith("-")) {
-          finalNum = finalNum * -1;
-        }
-        _dec[i] = finalNum.toString();
+      String target = _dec[i];
+      int negateIndex = target.indexOf("-");
+      int notIndex = target.indexOf("~");
+      print("isNegated: " + target.indexOf("-").toString());
+      print("isNoted: " + target.indexOf("~").toString());
+
+      String targetTrimmed = target.replaceAll("~", "").replaceAll("-", "");
+      int targetNum = int.parse(targetTrimmed);
+
+      if (negateIndex == 0 && notIndex == 1) {
+        targetNum = -(~targetNum);
+      } else if (negateIndex == 1 && notIndex == 0) {
+        targetNum = ~(-targetNum);
+      } else if (negateIndex == 0) {
+        targetNum = -targetNum;
+      } else if (notIndex == 0) {
+        targetNum = ~targetNum;
       }
-      if (isNumeric(_dec[i])) {
-        _dec[i] = int.parse(_dec[i], radix: _radix);
-      }
+
+      _dec[i] = int.parse(targetNum.toString(), radix: _radix);
     }
 
     // First loop: init
@@ -257,31 +266,31 @@ class _CalcAppState extends State<CalcApp> {
                   alignment: Alignment(1.0, 1.0),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   CalcButton(
                     text: 'hex',
-                    textSize: 18,
+                    textSize: 13.5,
                     fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: changeRadix,
                   ),
                   CalcButton(
                     text: 'dec',
-                    textSize: 18,
+                    textSize: 13.5,
                     fillColor: _radix == 10 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: changeRadix,
                   ),
                   CalcButton(
                     text: 'oct',
-                    textSize: 18,
+                    textSize: 13.5,
                     fillColor: _radix == 8 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: changeRadix,
                   ),
                   CalcButton(
                     text: 'bin',
-                    textSize: 18,
+                    textSize: 13.5,
                     fillColor: _radix == 2 ? Constants.SECONDARY_COLOR : 0x00,
                     callback: changeRadix,
                   ),
@@ -292,25 +301,25 @@ class _CalcAppState extends State<CalcApp> {
                 children: <Widget>[
                   CalcButton(
                     text: 'and',
-                    textSize: 18,
+                    textSize: 13,
                     fillColor: Constants.SECONDARY_COLOR,
                     callback: selectOperator,
                   ),
                   CalcButton(
                     text: 'or',
-                    textSize: 18,
+                    textSize: 13.5,
                     fillColor: Constants.SECONDARY_COLOR,
                     callback: selectOperator,
                   ),
                   CalcButton(
                     text: 'xor',
-                    textSize: 18,
+                    textSize: 13.5,
                     fillColor: Constants.SECONDARY_COLOR,
                     callback: selectOperator,
                   ),
                   CalcButton(
                     text: '~',
-                    textSize: 18,
+                    textSize: 13.5,
                     fillColor: Constants.SECONDARY_COLOR,
                     callback: enterUnaryOperator,
                   ),
@@ -469,6 +478,7 @@ class _CalcAppState extends State<CalcApp> {
                   ),
                   CalcButton(
                     text: '<-',
+                    textSize: 22,
                     callback: delete,
                   ),
                   CalcButton(
