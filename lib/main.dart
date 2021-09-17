@@ -45,7 +45,7 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   bool isNumeric(String text) {
-    return "+-*/".contains(text) == false && text != "and" && text != "or" && text != "xor";
+    return !isBinaryOperator(text);
   }
 
   bool isBinaryOperator(String text) {
@@ -128,8 +128,10 @@ class _CalcAppState extends State<CalcApp> {
   void delete(String text) {
     if (_exp.length > 0) {
       setState(() {
-        if (_exp.last.length == 1) {
+        if (_exp.last.length == 1 || _exp.last == "and" || _exp.last == "or" || _exp.last == "xor" || _exp.last == "not") {
+          print("exp before: " + _exp.toString());
           _exp.removeLast();
+          print("exp after: " + _exp.toString());
         } else {
           _exp.last = _exp.last.substring(0, _exp.last.length - 1);
         }
@@ -183,7 +185,7 @@ class _CalcAppState extends State<CalcApp> {
     while (i < _dec.length) {
       if (_dec[i] == "*") {
         _processed.last = _processed.last * _dec[i+1];
-      } else if (_dec[i] == "/") {
+      } else if (_dec[i] == "//") {
         _processed.last = _processed.last ~/ _dec[i + 1];
       } else if (_dec[i] == "and") {
         _processed.last = _processed.last & _dec[i + 1];
@@ -212,7 +214,7 @@ class _CalcAppState extends State<CalcApp> {
       j += 2;
     }
     // Second loop: debug
-    print("ans:" + ans.toString());
+    print("ans: " + ans.toString());
     // Second loop: setState
     setState(() {
       _answer = ans.toRadixString(_radix).toUpperCase();
