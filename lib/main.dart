@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:binary_calculator/util/constants.dart' as Constants;
 import 'package:binary_calculator/components/calcButton.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(CalcApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) => runApp(CalcApp()));
 }
 
 class CalcApp extends StatefulWidget {
