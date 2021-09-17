@@ -161,7 +161,7 @@ class _CalcAppState extends State<CalcApp> {
         print("isNegated: " + target.indexOf("-").toString());
         print("isNoted: " + target.indexOf("~").toString());
 
-        int targetNum = int.parse(targetTrimmed);
+        int targetNum = int.parse(targetTrimmed.toString(), radix: _radix);
 
         if (negateIndex == 0 && notIndex == 1) {
           targetNum = -(~targetNum);
@@ -173,7 +173,7 @@ class _CalcAppState extends State<CalcApp> {
           targetNum = ~targetNum;
         }
 
-        _dec[i] = int.parse(targetNum.toString(), radix: _radix);
+        _dec[i] = targetNum;
       }
     }
 
