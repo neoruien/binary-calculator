@@ -7,7 +7,7 @@ class CalcButton extends StatelessWidget {
   final int textColor;
   final double textSize;
   final bool condition;
-  final Function callback;
+  final Function method;
 
   const CalcButton({
     Key? key,
@@ -16,7 +16,7 @@ class CalcButton extends StatelessWidget {
     this.textColor = 0xFFFFFFFF,
     this.textSize = 25,
     this.condition = true,
-    required this.callback,
+    required this.method,
   }) : super(key: key);
 
   @override
@@ -47,7 +47,7 @@ class CalcButton extends StatelessWidget {
         height: 55,
         child: TextButton(
           style: flatButtonStyle,
-          onPressed: condition ? () => callback(text) : null,
+          onPressed: condition ? () => method(text) : null,
           child: buttonText
         )
       ),
