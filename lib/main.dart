@@ -72,7 +72,7 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   void enterUnaryOperator(String text) {
-    if (isNumeric(_exp.last)) {
+    if (_exp.length > 0 && isNumeric(_exp.last)) {
       setState(() {
         if (_answer.length > 0) {
           _exp.clear();
@@ -87,9 +87,9 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   String unarize(String text, String operator) {
-    if (operator == '~' && text.contains('~')) {
+    if (operator == 'not' && text.contains('~')) {
         return text.replaceAll("~", "");
-    } else if (operator == '~' && !text.contains('~')) {
+    } else if (operator == 'not' && !text.contains('~')) {
         return '~' + text;
     } else if (operator == '±' && text.contains('-')) {
         return text.replaceAll("-", "");
@@ -150,26 +150,29 @@ class _CalcAppState extends State<CalcApp> {
 
     // Convert to dec
     for (int i=0; i<_dec.length; i++) {
-      String target = _dec[i];
-      int negateIndex = target.indexOf("-");
-      int notIndex = target.indexOf("~");
-      print("isNegated: " + target.indexOf("-").toString());
-      print("isNoted: " + target.indexOf("~").toString());
+      if (isNumeric(_dec[i])) {
+        String target = _dec[i];
+        String targetTrimmed = target.replaceAll("~", "").replaceAll("-", "");
 
-      String targetTrimmed = target.replaceAll("~", "").replaceAll("-", "");
-      int targetNum = int.parse(targetTrimmed);
+        int negateIndex = target.indexOf("-");
+        int notIndex = target.indexOf("~");
+        print("isNegated: " + target.indexOf("-").toString());
+        print("isNoted: " + target.indexOf("~").toString());
 
-      if (negateIndex == 0 && notIndex == 1) {
-        targetNum = -(~targetNum);
-      } else if (negateIndex == 1 && notIndex == 0) {
-        targetNum = ~(-targetNum);
-      } else if (negateIndex == 0) {
-        targetNum = -targetNum;
-      } else if (notIndex == 0) {
-        targetNum = ~targetNum;
+        int targetNum = int.parse(targetTrimmed);
+
+        if (negateIndex == 0 && notIndex == 1) {
+          targetNum = -(~targetNum);
+        } else if (negateIndex == 1 && notIndex == 0) {
+          targetNum = ~(-targetNum);
+        } else if (negateIndex == 0) {
+          targetNum = -targetNum;
+        } else if (notIndex == 0) {
+          targetNum = ~targetNum;
+        }
+
+        _dec[i] = int.parse(targetNum.toString(), radix: _radix);
       }
-
-      _dec[i] = int.parse(targetNum.toString(), radix: _radix);
     }
 
     // First loop: init
@@ -195,8 +198,7 @@ class _CalcAppState extends State<CalcApp> {
       i += 2;
     }
     // First loop: debug
-    print("processed:");
-    print(_processed);
+    print("processed: " + _processed.toString());
     // Second loop: init
     dynamic ans = _processed[0];
     // Second loop: loop
@@ -210,8 +212,7 @@ class _CalcAppState extends State<CalcApp> {
       j += 2;
     }
     // Second loop: debug
-    print("ans:");
-    print(ans);
+    print("ans:" + ans.toString());
     // Second loop: setState
     setState(() {
       _answer = ans.toRadixString(_radix).toUpperCase();
@@ -318,7 +319,7 @@ class _CalcAppState extends State<CalcApp> {
                     callback: selectOperator,
                   ),
                   CalcButton(
-                    text: '~',
+                    text: 'not',
                     textSize: 13.5,
                     fillColor: Constants.SECONDARY_COLOR,
                     callback: enterUnaryOperator,
