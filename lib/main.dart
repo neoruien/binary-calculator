@@ -17,7 +17,7 @@ class _CalcAppState extends State<CalcApp> {
   String _answer = '';
   int _radix = 10;
 
-  void changeRadix(String text) {
+  void changeMode(String text) {
     int originalRadix = _radix;
     setState(() {
       // change radix
@@ -45,15 +45,15 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   bool isNumeric(String text) {
-    return !isBinaryOperator(text);
+    return !isBinaryMathOperator(text) && !isBinaryBitwiseOperator(text);
   }
 
-  bool isBinaryOperator(String text) {
-    return text == "+" || text == "-" || text == "*" || text == "//" ||  text == "and" || text == "or" || text == "xor";
+  bool isBinaryMathOperator(String text) {
+    return text == "+" || text == "-" || text == "*" || text == "//";
   }
 
-  bool isFloat(String text) {
-    return text.contains(".");
+  bool isBinaryBitwiseOperator(String text) {
+    return text == "and" || text == "or" || text == "xor";
   }
 
   void enterNumber(String text) {
@@ -76,17 +76,17 @@ class _CalcAppState extends State<CalcApp> {
       setState(() {
         if (_answer.length > 0) {
           _exp.clear();
-          _exp.add(unarize(_answer, text));
+          _exp.add(applyUnaryOperator(_answer, text));
           _answer = '';
         } else if (_exp.length > 0) {
-          _exp.last = unarize(_exp.last, text);
+          _exp.last = applyUnaryOperator(_exp.last, text);
         }
       });
     }
     debugPrint('$_exp');
   }
 
-  String unarize(String text, String operator) {
+  String applyUnaryOperator(String text, String operator) {
     if (operator == 'not' && text.contains('~')) {
         return text.replaceAll("~", "");
     } else if (operator == 'not' && !text.contains('~')) {
@@ -100,7 +100,7 @@ class _CalcAppState extends State<CalcApp> {
     }
   }
 
-  void selectOperator(String text) {
+  void enterBinaryOperator(String text) {
     if (_answer.length > 0) {
       _exp.clear();
       _exp.add(_answer);
@@ -128,10 +128,8 @@ class _CalcAppState extends State<CalcApp> {
   void delete(String text) {
     if (_exp.length > 0) {
       setState(() {
-        if (_exp.last.length == 1 || _exp.last == "and" || _exp.last == "or" || _exp.last == "xor" || _exp.last == "not") {
-          print("exp before: " + _exp.toString());
+        if (_exp.last.length == 1 || isBinaryBitwiseOperator(_exp.last)) {
           _exp.removeLast();
-          print("exp after: " + _exp.toString());
         } else {
           _exp.last = _exp.last.substring(0, _exp.last.length - 1);
         }
@@ -277,25 +275,25 @@ class _CalcAppState extends State<CalcApp> {
                     text: 'hex',
                     textSize: 13.5,
                     fillColor: _radix == 16 ? Constants.SECONDARY_COLOR : 0x00,
-                    callback: changeRadix,
+                    callback: changeMode,
                   ),
                   CalcButton(
                     text: 'dec',
                     textSize: 13.5,
                     fillColor: _radix == 10 ? Constants.SECONDARY_COLOR : 0x00,
-                    callback: changeRadix,
+                    callback: changeMode,
                   ),
                   CalcButton(
                     text: 'oct',
                     textSize: 13.5,
                     fillColor: _radix == 8 ? Constants.SECONDARY_COLOR : 0x00,
-                    callback: changeRadix,
+                    callback: changeMode,
                   ),
                   CalcButton(
                     text: 'bin',
                     textSize: 13.5,
                     fillColor: _radix == 2 ? Constants.SECONDARY_COLOR : 0x00,
-                    callback: changeRadix,
+                    callback: changeMode,
                   ),
                 ],
               ),
@@ -306,19 +304,19 @@ class _CalcAppState extends State<CalcApp> {
                     text: 'and',
                     textSize: 13,
                     fillColor: Constants.SECONDARY_COLOR,
-                    callback: selectOperator,
+                    callback: enterBinaryOperator,
                   ),
                   CalcButton(
                     text: 'or',
                     textSize: 13.5,
                     fillColor: Constants.SECONDARY_COLOR,
-                    callback: selectOperator,
+                    callback: enterBinaryOperator,
                   ),
                   CalcButton(
                     text: 'xor',
                     textSize: 13.5,
                     fillColor: Constants.SECONDARY_COLOR,
-                    callback: selectOperator,
+                    callback: enterBinaryOperator,
                   ),
                   CalcButton(
                     text: 'not',
@@ -380,7 +378,7 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: '//',
                     fillColor: Constants.SECONDARY_COLOR,
-                    callback: selectOperator,
+                    callback: enterBinaryOperator,
                   ),
                 ],
               ),
@@ -408,7 +406,7 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: '*',
                     fillColor: Constants.SECONDARY_COLOR,
-                    callback: selectOperator,
+                    callback: enterBinaryOperator,
                   ),
                 ],
               ),
@@ -436,7 +434,7 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: '-',
                     fillColor: Constants.SECONDARY_COLOR,
-                    callback: selectOperator,
+                    callback: enterBinaryOperator,
                   ),
                 ],
               ),
@@ -463,7 +461,7 @@ class _CalcAppState extends State<CalcApp> {
                   CalcButton(
                     text: '+',
                     fillColor: Constants.SECONDARY_COLOR,
-                    callback: selectOperator,
+                    callback: enterBinaryOperator,
                   ),
                 ],
               ),
