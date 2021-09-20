@@ -19,6 +19,7 @@ class CalcApp extends StatefulWidget {
 class _CalcAppState extends State<CalcApp> {
   List<dynamic> _expressions = [];
   String _answer = '';
+  List<List<String>> _history = [];
   int _radix = 10;
 
   void changeMode(String text) {
@@ -143,6 +144,10 @@ class _CalcAppState extends State<CalcApp> {
   }
 
   void evaluate(String text) {
+    if (_expressions.length == 0) {
+      return;
+    }
+
     if (!isNumeric(_expressions.last)) {
       setState(() {
         _expressions.removeLast();
@@ -218,9 +223,112 @@ class _CalcAppState extends State<CalcApp> {
     // Second loop: debug
     print("ans: " + ans.toString());
     // Second loop: setState
+    String finalExpression = _expressions.join(" ");
+    String finalAnswer = ans.toRadixString(_radix).toUpperCase();
+    List<String> newEntry = [];
+    newEntry.add(finalExpression);
+    newEntry.add(finalAnswer);
     setState(() {
-      _answer = ans.toRadixString(_radix).toUpperCase();
+      _answer = finalAnswer;
+      _history.add(newEntry);
     });
+  }
+
+  void clearHistory() {
+    setState(() {
+      _history.clear();
+    });
+  }
+
+  Widget getHistoryWidget() {
+    if (_history.length == 0) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "Your history is empty",
+            style: GoogleFonts.rubik(
+                textStyle: TextStyle(fontSize: 18)
+            )
+          ),
+          Text(
+              "Start calculating now!",
+              style: GoogleFonts.rubik(
+                  textStyle: TextStyle(fontSize: 18, color: Color(ThemeColors.GREY))
+              )
+          ),
+        ]
+      );
+    } else {
+      return Column(
+        children: [
+          Expanded(
+              flex: 10,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (var entry in _history) Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(width: 1, color: Color(ThemeColors.GREY)),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Clipboard.setData(new ClipboardData(text: entry[1]));
+                                },
+                                icon: Icon(Icons.copy)),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                    entry[0],
+                                    style: GoogleFonts.rubik(
+                                        textStyle: TextStyle(fontSize: 18)
+                                    )
+                                ),
+                                Text(
+                                    entry[1],
+                                    style: GoogleFonts.rubik(
+                                        textStyle: TextStyle(fontSize: 30)
+                                    )
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                    )
+                  ],
+                ),
+              ),
+          ),
+          Expanded(
+              flex: 1,
+              child: TextButton(
+                onPressed: clearHistory,
+                child: Container(
+                  width: double.infinity,
+                  child: Center(
+                    child: Text(
+                        "Clear",
+                        style: GoogleFonts.rubik(
+                            textStyle: TextStyle(
+                                fontSize: 18,
+                                color: Color(ThemeColors.PRIMARY))
+                        )
+                    ),
+                  ),
+                ))
+          )
+        ],
+      );
+    }
   }
 
   @override
@@ -483,11 +591,7 @@ class _CalcAppState extends State<CalcApp> {
                     ),
                   ],
                 ),
-                Column(
-                  children: [
-                    Text("1")
-                  ],
-                )
+                getHistoryWidget(),
               ],
             )
           ),
