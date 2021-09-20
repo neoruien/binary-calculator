@@ -17,7 +17,7 @@ class CalcApp extends StatefulWidget {
 }
 
 class _CalcAppState extends State<CalcApp> {
-  List<dynamic> _exp = [];
+  List<dynamic> _expressions = [];
   String _answer = '';
   int _radix = 10;
 
@@ -34,10 +34,10 @@ class _CalcAppState extends State<CalcApp> {
       } else if (text == "bin") {
         _radix = 2;
       }
-      // update exp
-      for (int i=0; i<_exp.length; i++) {
-        if (isNumeric(_exp[i])) {
-          _exp[i] = int.parse(_exp[i], radix: originalRadix).toRadixString(_radix).toUpperCase();
+      // update expressions
+      for (int i=0; i<_expressions.length; i++) {
+        if (isNumeric(_expressions[i])) {
+          _expressions[i] = int.parse(_expressions[i], radix: originalRadix).toRadixString(_radix).toUpperCase();
         }
       }
       // update ans
@@ -45,7 +45,7 @@ class _CalcAppState extends State<CalcApp> {
         _answer = int.parse(_answer, radix: originalRadix).toRadixString(_radix).toUpperCase();
       }
     });
-    debugPrint('$_exp');
+    debugPrint('$_expressions');
   }
 
   bool isNumeric(String text) {
@@ -63,31 +63,31 @@ class _CalcAppState extends State<CalcApp> {
   void enterNumber(String text) {
     if (_answer.length > 0) {
       _answer = '';
-      _exp.clear();
+      _expressions.clear();
     }
     setState(() {
-      if (_exp.length == 0 || !isNumeric(_exp.last)) {
-        _exp.add(text);
+      if (_expressions.length == 0 || !isNumeric(_expressions.last)) {
+        _expressions.add(text);
       } else {
-        _exp.last += text;
+        _expressions.last += text;
       }
     });
-    debugPrint('$_exp');
+    debugPrint('$_expressions');
   }
 
   void enterUnaryOperator(String text) {
-    if (_exp.length > 0 && isNumeric(_exp.last)) {
+    if (_expressions.length > 0 && isNumeric(_expressions.last)) {
       setState(() {
         if (_answer.length > 0) {
-          _exp.clear();
-          _exp.add(applyUnaryOperator(_answer, text));
+          _expressions.clear();
+          _expressions.add(applyUnaryOperator(_answer, text));
           _answer = '';
-        } else if (_exp.length > 0) {
-          _exp.last = applyUnaryOperator(_exp.last, text);
+        } else if (_expressions.length > 0) {
+          _expressions.last = applyUnaryOperator(_expressions.last, text);
         }
       });
     }
-    debugPrint('$_exp');
+    debugPrint('$_expressions');
   }
 
   String applyUnaryOperator(String text, String operator) {
@@ -106,50 +106,50 @@ class _CalcAppState extends State<CalcApp> {
 
   void enterBinaryOperator(String text) {
     if (_answer.length > 0) {
-      _exp.clear();
-      _exp.add(_answer);
+      _expressions.clear();
+      _expressions.add(_answer);
       _answer = '';
-    } else if (_exp.length == 0) {
+    } else if (_expressions.length == 0) {
       return;
     }
     setState(() {
-      if (isNumeric(_exp.last)) {
-        _exp.add(text);
+      if (isNumeric(_expressions.last)) {
+        _expressions.add(text);
       } else {
-        _exp.last = text;
+        _expressions.last = text;
       }
     });
-    debugPrint('$_exp');
+    debugPrint('$_expressions');
   }
 
   void clear(String text) {
     setState(() {
       _answer = '';
-      _exp.clear();
+      _expressions.clear();
     });
   }
 
   void delete(String text) {
-    if (_exp.length > 0) {
+    if (_expressions.length > 0) {
       setState(() {
-        if (_exp.last.length == 1 || isBinaryBitwiseOperator(_exp.last)) {
-          _exp.removeLast();
+        if (_expressions.last.length == 1 || isBinaryBitwiseOperator(_expressions.last)) {
+          _expressions.removeLast();
         } else {
-          _exp.last = _exp.last.substring(0, _exp.last.length - 1);
+          _expressions.last = _expressions.last.substring(0, _expressions.last.length - 1);
         }
       });
     }
-    debugPrint('$_exp');
+    debugPrint('$_expressions');
   }
 
   void evaluate(String text) {
-    if (!isNumeric(_exp.last)) {
+    if (!isNumeric(_expressions.last)) {
       setState(() {
-        _exp.removeLast();
+        _expressions.removeLast();
       });
     }
 
-    List<dynamic> _dec = [..._exp];
+    List<dynamic> _dec = [..._expressions];
     debugPrint('evaluate: $_dec');
 
     // Convert to dec
@@ -272,7 +272,7 @@ class _CalcAppState extends State<CalcApp> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            DisplayText(text: _exp.join(" "), textSize: 24,),
+                            DisplayText(text: _expressions.join(" "), textSize: 24,),
                             DisplayText(text: _answer, textSize: 48,),
                           ],
                         ),
