@@ -1,3 +1,4 @@
+import 'package:binary_calculator/components/displayText.dart';
 import 'package:flutter/material.dart';
 import 'package:binary_calculator/util/themeColors.dart' as ThemeColors;
 import 'package:binary_calculator/components/calcButton.dart';
@@ -235,42 +236,8 @@ class _CalcAppState extends State<CalcApp> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 12),
-                      child: Text(
-                        _exp.join(" "),
-                        style: GoogleFonts.rubik(
-                          textStyle: TextStyle(
-                            fontSize: 24,
-                            color: Color(ThemeColors.BLACK),
-                          ),
-                        ),
-                      ),
-                    ),
-                    alignment: Alignment(1.0, 1.0),
-                  ),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Text(
-                        _answer,
-                        style: GoogleFonts.rubik(
-                          textStyle: TextStyle(
-                            fontSize: 48,
-                            color: Color(ThemeColors.BLACK),
-                          ),
-                        ),
-                      ),
-                    ),
-                    alignment: Alignment(1.0, 1.0),
-                  ),
-                ),
+                DisplayText(text: _exp.join(" "), textSize: 24,),
+                DisplayText(text: _answer, textSize: 48,),
                 SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
