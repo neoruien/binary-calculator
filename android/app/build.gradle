@@ -43,8 +43,8 @@ android {
         applicationId "com.kestrellite.binary_calculator"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 4
-        versionName "1.0.4"
+        versionCode 5
+        versionName "1.0.5"
 //        versionCode flutterVersionCode.toInteger()
 //        versionName flutterVersionName
     }
