@@ -38,17 +38,12 @@ class CalcButton extends StatelessWidget {
       ),
     );
 
-    return Container(
-      margin: EdgeInsets.all(5),
-      child: SizedBox(
-        width: 55,
-        height: 55,
+    return Expanded(
         child: TextButton(
           style: flatButtonStyle,
           onPressed: condition ? () => method(text) : null,
           child: buttonText
         )
-      ),
     );
   }
 }
