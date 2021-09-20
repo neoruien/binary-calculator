@@ -229,229 +229,267 @@ class _CalcAppState extends State<CalcApp> {
       debugShowCheckedModeBanner: false,
       title: 'Calculator',
       home: SafeArea(
-        child: Scaffold(
-          backgroundColor: Color(ThemeColors.WHITE),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      DisplayText(text: _exp.join(" "), textSize: 24,),
-                      DisplayText(text: _answer, textSize: 48,),
-                    ],
-                  ),
+        child: DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            backgroundColor: Color(ThemeColors.WHITE),
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(50),
+              child: AppBar(
+                backgroundColor: Color(ThemeColors.WHITE),
+                elevation: 0,
+                bottom: TabBar(
+                  indicatorColor: Color(ThemeColors.PRIMARY),
+                  labelColor: Color(ThemeColors.PRIMARY),
+                  unselectedLabelColor: Color(ThemeColors.GREY),
+                  tabs: [
+                    Tab(icon: Text(
+                        "Calculator",
+                        style: GoogleFonts.rubik(
+                          textStyle: TextStyle(fontSize: 18)
+                        )
+                    )),
+                    Tab(icon: Text(
+                        "History",
+                        style: GoogleFonts.rubik(
+                            textStyle: TextStyle(fontSize: 18)
+                        )
+                    )),
+                  ],
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(ThemeColors.GRADIENT_COLOR),
-                          Color(ThemeColors.WHITE),
-                        ],
-                      )
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CalcRow(buttons: [
-                        CalcButton(
-                          text: 'hex',
-                          textSize: 18,
-                          textColor: _radix == 16 ? ThemeColors.PRIMARY : ThemeColors.GREY,
-                          method: changeMode,
+            ),
+            body: TabBarView(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            DisplayText(text: _exp.join(" "), textSize: 24,),
+                            DisplayText(text: _answer, textSize: 48,),
+                          ],
                         ),
-                        CalcButton(
-                          text: 'dec',
-                          textSize: 18,
-                          textColor: _radix == 10 ? ThemeColors.PRIMARY : ThemeColors.GREY,
-                          method: changeMode,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color(ThemeColors.GRADIENT_COLOR),
+                                Color(ThemeColors.WHITE),
+                              ],
+                            )
                         ),
-                        CalcButton(
-                          text: 'oct',
-                          textSize: 18,
-                          textColor: _radix == 8 ? ThemeColors.PRIMARY : ThemeColors.GREY,
-                          method: changeMode,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CalcRow(buttons: [
+                              CalcButton(
+                                text: 'hex',
+                                textSize: 18,
+                                textColor: _radix == 16 ? ThemeColors.PRIMARY : ThemeColors.GREY,
+                                method: changeMode,
+                              ),
+                              CalcButton(
+                                text: 'dec',
+                                textSize: 18,
+                                textColor: _radix == 10 ? ThemeColors.PRIMARY : ThemeColors.GREY,
+                                method: changeMode,
+                              ),
+                              CalcButton(
+                                text: 'oct',
+                                textSize: 18,
+                                textColor: _radix == 8 ? ThemeColors.PRIMARY : ThemeColors.GREY,
+                                method: changeMode,
+                              ),
+                              CalcButton(
+                                text: 'bin',
+                                textSize: 18,
+                                textColor: _radix == 2 ? ThemeColors.PRIMARY : ThemeColors.GREY,
+                                method: changeMode,
+                              ),
+                            ]),
+                            CalcRow(buttons: [
+                              CalcButton(
+                                text: 'and',
+                                textSize: 18,
+                                textColor: ThemeColors.PRIMARY,
+                                method: enterBinaryOperator,
+                              ),
+                              CalcButton(
+                                text: 'or',
+                                textSize: 18,
+                                textColor: ThemeColors.PRIMARY,
+                                method: enterBinaryOperator,
+                              ),
+                              CalcButton(
+                                text: 'xor',
+                                textSize: 18,
+                                textColor: ThemeColors.PRIMARY,
+                                method: enterBinaryOperator,
+                              ),
+                              CalcButton(
+                                text: 'not',
+                                textSize: 18,
+                                textColor: ThemeColors.PRIMARY,
+                                method: enterUnaryOperator,
+                              ),
+                            ]),
+                            CalcRow(buttons: [
+                              CalcButton(
+                                text: 'A',
+                                condition: _radix == 16,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: 'B',
+                                condition: _radix == 16,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: 'C',
+                                condition: _radix == 16,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '±',
+                                textColor: ThemeColors.PRIMARY,
+                                method: enterUnaryOperator,
+                              ),
+                            ]),
+                            CalcRow(buttons: [
+                              CalcButton(
+                                text: 'D',
+                                condition: _radix == 16,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: 'E',
+                                condition: _radix == 16,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: 'F',
+                                condition: _radix == 16,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '//',
+                                textColor: ThemeColors.PRIMARY,
+                                method: enterBinaryOperator,
+                              ),
+                            ]),
+                            CalcRow(buttons: [
+                              CalcButton(
+                                text: '7',
+                                condition: _radix >= 8,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '8',
+                                condition: _radix >= 10,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '9',
+                                condition: _radix >= 10,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '*',
+                                textColor: ThemeColors.PRIMARY,
+                                method: enterBinaryOperator,
+                              ),
+                            ]),
+                            CalcRow(buttons: [
+                              CalcButton(
+                                text: '4',
+                                condition: _radix >= 8,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '5',
+                                condition: _radix >= 8,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '6',
+                                condition: _radix >= 8,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '-',
+                                textColor: ThemeColors.PRIMARY,
+                                method: enterBinaryOperator,
+                              ),
+                            ]),
+                            CalcRow(buttons: [
+                              CalcButton(
+                                text: '1',
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '2',
+                                condition: _radix >= 8,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '3',
+                                condition: _radix >= 8,
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: '+',
+                                textColor: ThemeColors.PRIMARY,
+                                method: enterBinaryOperator,
+                              ),
+                            ]),
+                            CalcRow(buttons: [
+                              CalcButton(
+                                text: '0',
+                                method: enterNumber,
+                              ),
+                              CalcButton(
+                                text: 'AC',
+                                method: clear,
+                              ),
+                              CalcButton(
+                                text: '⌫',
+                                method: delete,
+                              ),
+                              CalcButton(
+                                text: '=',
+                                textColor: ThemeColors.PRIMARY,
+                                method: evaluate,
+                              ),
+                            ])
+                          ],
                         ),
-                        CalcButton(
-                          text: 'bin',
-                          textSize: 18,
-                          textColor: _radix == 2 ? ThemeColors.PRIMARY : ThemeColors.GREY,
-                          method: changeMode,
-                        ),
-                      ]),
-                      CalcRow(buttons: [
-                        CalcButton(
-                          text: 'and',
-                          textSize: 18,
-                          textColor: ThemeColors.PRIMARY,
-                          method: enterBinaryOperator,
-                        ),
-                        CalcButton(
-                          text: 'or',
-                          textSize: 18,
-                          textColor: ThemeColors.PRIMARY,
-                          method: enterBinaryOperator,
-                        ),
-                        CalcButton(
-                          text: 'xor',
-                          textSize: 18,
-                          textColor: ThemeColors.PRIMARY,
-                          method: enterBinaryOperator,
-                        ),
-                        CalcButton(
-                          text: 'not',
-                          textSize: 18,
-                          textColor: ThemeColors.PRIMARY,
-                          method: enterUnaryOperator,
-                        ),
-                      ]),
-                      CalcRow(buttons: [
-                        CalcButton(
-                          text: 'A',
-                          condition: _radix == 16,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: 'B',
-                          condition: _radix == 16,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: 'C',
-                          condition: _radix == 16,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '±',
-                          textColor: ThemeColors.PRIMARY,
-                          method: enterUnaryOperator,
-                        ),
-                      ]),
-                      CalcRow(buttons: [
-                        CalcButton(
-                          text: 'D',
-                          condition: _radix == 16,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: 'E',
-                          condition: _radix == 16,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: 'F',
-                          condition: _radix == 16,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '//',
-                          textColor: ThemeColors.PRIMARY,
-                          method: enterBinaryOperator,
-                        ),
-                      ]),
-                      CalcRow(buttons: [
-                        CalcButton(
-                          text: '7',
-                          condition: _radix >= 8,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '8',
-                          condition: _radix >= 10,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '9',
-                          condition: _radix >= 10,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '*',
-                          textColor: ThemeColors.PRIMARY,
-                          method: enterBinaryOperator,
-                        ),
-                      ]),
-                      CalcRow(buttons: [
-                        CalcButton(
-                          text: '4',
-                          condition: _radix >= 8,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '5',
-                          condition: _radix >= 8,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '6',
-                          condition: _radix >= 8,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '-',
-                          textColor: ThemeColors.PRIMARY,
-                          method: enterBinaryOperator,
-                        ),
-                      ]),
-                      CalcRow(buttons: [
-                        CalcButton(
-                          text: '1',
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '2',
-                          condition: _radix >= 8,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '3',
-                          condition: _radix >= 8,
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: '+',
-                          textColor: ThemeColors.PRIMARY,
-                          method: enterBinaryOperator,
-                        ),
-                      ]),
-                      CalcRow(buttons: [
-                        CalcButton(
-                          text: '0',
-                          method: enterNumber,
-                        ),
-                        CalcButton(
-                          text: 'AC',
-                          method: clear,
-                        ),
-                        CalcButton(
-                          text: '⌫',
-                          method: delete,
-                        ),
-                        CalcButton(
-                          text: '=',
-                          textColor: ThemeColors.PRIMARY,
-                          method: evaluate,
-                        ),
-                      ])
-                    ],
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                Column(
+                  children: [
+                    Text("1")
+                  ],
+                )
+              ],
+            )
           ),
         ),
       ),
