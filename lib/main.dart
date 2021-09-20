@@ -38,7 +38,26 @@ class _CalcAppState extends State<CalcApp> {
       // update expressions
       for (int i=0; i<_expressions.length; i++) {
         if (isNumeric(_expressions[i])) {
-          _expressions[i] = int.parse(_expressions[i], radix: originalRadix).toRadixString(_radix).toUpperCase();
+          String target= _expressions[i];
+          String targetTrimmed = target.replaceAll("~", "").replaceAll("-", "");
+          int negateIndex = target.indexOf("-");
+          int notIndex = target.indexOf("~");
+          print("isNegated: " + target.indexOf("-").toString());
+          print("isNoted: " + target.indexOf("~").toString());
+
+          String targetString = int.parse(targetTrimmed, radix: originalRadix).toRadixString(_radix).toUpperCase();
+
+          if (negateIndex == 0 && notIndex == 1) {
+            targetString = '-~' + targetString;
+          } else if (negateIndex == 1 && notIndex == 0) {
+            targetString = '~-' + targetString;
+          } else if (negateIndex == 0) {
+            targetString = '-' + targetString;
+          } else if (notIndex == 0) {
+            targetString = '~' + targetString;
+          }
+
+          _expressions[i] = targetString;
         }
       }
       // update ans
@@ -380,8 +399,8 @@ class _CalcAppState extends State<CalcApp> {
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
                                 children: [
-                                  DisplayText(text: _expressions.join(" "), textSize: 24,),
-                                  DisplayText(text: _answer, textSize: 48,),
+                                  DisplayText(text: _expressions.join(" "), textSize: 24, gradientFraction: 0.3,),
+                                  DisplayText(text: _answer, textSize: 48, gradientFraction: 0.3,),
                                 ],
                               )
                             )

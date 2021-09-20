@@ -7,6 +7,7 @@ class DisplayText extends StatelessWidget {
   final String text;
   final int textColor;
   final double textSize;
+  final double gradientFraction;
 
   final _scrollController = ScrollController();
 
@@ -15,14 +16,15 @@ class DisplayText extends StatelessWidget {
     required this.text,
     this.textColor = ThemeColors.BLACK,
     this.textSize = 25,
+    this.gradientFraction = 0.15,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: FadingEdgeScrollView.fromSingleChildScrollView(
-        gradientFractionOnStart: 0.3,
-        gradientFractionOnEnd: 0.3,
+        gradientFractionOnStart: gradientFraction,
+        gradientFractionOnEnd: gradientFraction,
         child: SingleChildScrollView(
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
