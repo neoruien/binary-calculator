@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:binary_calculator/util/themeColors.dart' as ThemeColors;
 
 class CalcButton extends StatelessWidget {
   final String text;
-  final int fillColor;
   final int textColor;
   final double textSize;
   final bool condition;
@@ -12,8 +12,7 @@ class CalcButton extends StatelessWidget {
   const CalcButton({
     Key? key,
     required this.text,
-    this.fillColor = 0x00,
-    this.textColor = 0xFFFFFFFF,
+    this.textColor = ThemeColors.BLACK,
     this.textSize = 25,
     this.condition = true,
     required this.method,
@@ -24,8 +23,7 @@ class CalcButton extends StatelessWidget {
 
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
       primary: Color(textColor),
-      backgroundColor: Color(fillColor),
-      onSurface: Colors.grey,
+      onSurface: Color(ThemeColors.INACTIVE_COLOR),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50.0),
       ),
