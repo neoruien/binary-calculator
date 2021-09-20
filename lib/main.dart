@@ -168,7 +168,7 @@ class _CalcAppState extends State<CalcApp> {
         print("isNegated: " + target.indexOf("-").toString());
         print("isNoted: " + target.indexOf("~").toString());
 
-        int targetNum = int.parse(targetTrimmed.toString(), radix: _radix);
+        int targetNum = int.parse(targetTrimmed, radix: _radix);
 
         if (negateIndex == 0 && notIndex == 1) {
           targetNum = -(~targetNum);
@@ -279,27 +279,23 @@ class _CalcAppState extends State<CalcApp> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            IconButton(
-                                onPressed: () {
-                                  Clipboard.setData(new ClipboardData(text: entry[1]));
-                                },
-                                icon: Icon(Icons.copy)),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                    entry[0],
-                                    style: GoogleFonts.rubik(
-                                        textStyle: TextStyle(fontSize: 18)
-                                    )
-                                ),
-                                Text(
-                                    entry[1],
-                                    style: GoogleFonts.rubik(
-                                        textStyle: TextStyle(fontSize: 30)
-                                    )
-                                ),
-                              ],
+                            Expanded(
+                              flex: 3,
+                              child: IconButton(
+                                  onPressed: () {
+                                    Clipboard.setData(new ClipboardData(text: entry[1]));
+                                  },
+                                  icon: Icon(Icons.copy)),
+                            ),
+                            Expanded(
+                              flex: 20,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  DisplayText(text: entry[0], textSize: 18),
+                                  DisplayText(text: entry[1], textSize: 30),
+                                ],
+                              ),
                             ),
                           ],
                         )
@@ -380,8 +376,15 @@ class _CalcAppState extends State<CalcApp> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            DisplayText(text: _expressions.join(" "), textSize: 24,),
-                            DisplayText(text: _answer, textSize: 48,),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                children: [
+                                  DisplayText(text: _expressions.join(" "), textSize: 24,),
+                                  DisplayText(text: _answer, textSize: 48,),
+                                ],
+                              )
+                            )
                           ],
                         ),
                       ),
