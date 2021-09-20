@@ -396,7 +396,7 @@ class _CalcAppState extends State<CalcApp> {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                Color(ThemeColors.GRADIENT_COLOR),
+                                Color(ThemeColors.TERTIARY),
                                 Color(ThemeColors.WHITE),
                               ],
                             )
@@ -409,25 +409,25 @@ class _CalcAppState extends State<CalcApp> {
                               CalcButton(
                                 text: 'hex',
                                 textSize: 18,
-                                textColor: _radix == 16 ? ThemeColors.PRIMARY : ThemeColors.GREY,
+                                textColor: _radix == 16 ? ThemeColors.PRIMARY : ThemeColors.SECONDARY,
                                 method: changeMode,
                               ),
                               CalcButton(
                                 text: 'dec',
                                 textSize: 18,
-                                textColor: _radix == 10 ? ThemeColors.PRIMARY : ThemeColors.GREY,
+                                textColor: _radix == 10 ? ThemeColors.PRIMARY : ThemeColors.SECONDARY,
                                 method: changeMode,
                               ),
                               CalcButton(
                                 text: 'oct',
                                 textSize: 18,
-                                textColor: _radix == 8 ? ThemeColors.PRIMARY : ThemeColors.GREY,
+                                textColor: _radix == 8 ? ThemeColors.PRIMARY : ThemeColors.SECONDARY,
                                 method: changeMode,
                               ),
                               CalcButton(
                                 text: 'bin',
                                 textSize: 18,
-                                textColor: _radix == 2 ? ThemeColors.PRIMARY : ThemeColors.GREY,
+                                textColor: _radix == 2 ? ThemeColors.PRIMARY : ThemeColors.SECONDARY,
                                 method: changeMode,
                               ),
                             ]),
